@@ -3,8 +3,11 @@
 
 <form action="{% url 'ordenar' %}" method="post" novalidate>
     {% csrf_token %}
+    <table>
 
-    {{ uniformform }}
+        {{ uniformform.as_table }}
 
+    </table>
+    
     <input type="submit" value="Ordenar">
 </form>

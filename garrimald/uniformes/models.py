@@ -11,24 +11,128 @@ class Escuela(models.Model):
 
 class Pedidos(models.Model):
 
-    TALLAS = ((0,'0'), (2,'2'))
-    CANTIDAD = ((0,'0'), (1,'1'))
+    TALLAS = ((0,'0'), (2,'2'), (4,'4'), (6,'6'), (8,'8'),
+              (10,'10'), (12,'12'), (14,'14'), (16,'16'), 
+              (32,'X-CH'), (34,'CH'), (36,'M'), (38,'G'),
+              (40,'X-G'), (42,'2X-G'),)
+    CANTIDAD = ((0,'0'), (1,'1'), (2,'2'), (3,'3'), (4,'4'), (5,'5'))
+    
+    id = models.AutoField(primary_key=True)
 
     escuela = models.ForeignKey(Escuela, on_delete=models.CASCADE)
 
     nombre = models.CharField(max_length=64, default='')
 
+    # Chamarra
     chamarra = models.IntegerField(
         default=0,
         choices= TALLAS,
     )
-    #chamarra_largo = models.ForeignKey(Tallas, on_delete=models.CASCADE)
+    chamarra_largo = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
     chamarra_cantidad = models.IntegerField(
         default=0,
         choices=CANTIDAD,
     )
 
-    #bordados = models.ForeignKey(Cantidad, on_delete=models.CASCADE)
+    # Playera
+    playera = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    playera_largo = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    playera_cantidad = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
+
+    # Pants
+    pants = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    pants_largo = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    pants_cantidad = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
+
+    # Sueter
+    sueter = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    sueter_largo = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    sueter_cantidad = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
+
+
+    # Camisa
+    camisa = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    camisa_cantidad = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
+
+
+
+    # Blusa
+    blusa = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    blusa_cantidad = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
+
+    # Pantalón
+    pantalon = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    pantalon_cantidad = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
+
+
+    # Jumper
+    jumper = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    jumper_largo = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    jumper_cantidad = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
+
+
+
+    bordados = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
     bordado_nombre = models.CharField(max_length=64, default='')
     celular = models.IntegerField(
         validators=[
@@ -36,8 +140,17 @@ class Pedidos(models.Model):
             MinValueValidator(0)
         ]
     )
-    total = models.IntegerField()
-    a_cuenta = models.IntegerField()
-    resta = models.IntegerField()
 
-    
+class Pagos(models.Model):
+    pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE, default=0)
+    total = models.FloatField()
+    a_cuenta = models.FloatField()
+    resta = models.FloatField()
+
+
+class Precios(models.Model):
+    PRENDAS = (('chamarra','chamarra'), ('playera','playera'), ('pants','pants'), 
+               ('sueter','sueter'), ('camisa','camisa'), ('blusa','blusa'),
+               ('pantalon','pantalon'), ('jumper', 'jumper'),)
+    escuela = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
+    prenda = models.CharField(max_length=64, default='', choices=PRENDAS)
