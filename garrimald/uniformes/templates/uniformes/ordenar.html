@@ -1,0 +1,10 @@
+<h1>Ordene un uniforme</h1>
+
+
+<form action="{% url 'ordenar' %}" method="post" novalidate>
+    {% csrf_token %}
+
+    {{ uniformform }}
+
+    <input type="submit" value="Ordenar">
+</form>
