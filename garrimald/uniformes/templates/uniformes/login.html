@@ -1,0 +1,10 @@
+{% extends 'uniformes/base.html' %}
+{% block 'body' %}
+<div class="text-center">
+<br>
+    <form method="post">{% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" class="btn btn-secondary" value="Entrar"/>
+    </form>
+</div>
+{% endblock %}

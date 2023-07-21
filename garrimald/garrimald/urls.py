@@ -26,4 +26,10 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('administradores', views.administradores, name='administradores'),
     path('ordenar', views.ordenar, name='ordenar'),
+    path('ver', views.ver, name='ver'),
+    path('editar', views.editar, name='editar'),
+    path('capital', views.capital, name='capital'),
+    path('dbase', views.dbase, name='dbase'),
+    path('login', views.LoginInterfaceView.as_view(), name='login'),
+    path('logout', views.LogoutInterfaceView.as_view(), name='logout'),
 ]
