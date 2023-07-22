@@ -12,7 +12,3 @@ class HombreForm(forms.ModelForm):
                   'camisa', 'camisa_cantidad',
                   'pantalon', 'pantalon_cantidad',
                   'bordados', 'bordado_nombre', 'celular']
-        """labels = {
-            'escuela':'Escuela', 'nombre':'Nombre', 'chamarra':'Talla chamarra', 
-            'chamarra_cantidad':'Cantidad', 'bordado_nombre':'Nombre en el bordado', 'celular':'Celular'
-        }"""
