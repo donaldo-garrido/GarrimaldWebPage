@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 
 # Importamos funciones y clases
-from .forms import UniformForm
+from .forms import HombreForm
 from .models import Escuela, Pedidos
 
 # -----------------------------------------------
@@ -37,8 +37,17 @@ def administradores(request):
 # Función para ordenar un pedido
 @login_required(login_url='login')
 def ordenar(request):
-    filled_form = UniformForm()
-    return render(request, 'uniformes/ordenar.html', {'uniformform':filled_form})
+    filled_form = HombreForm()
+    if request.method == 'POST':
+        filled_form = HombreForm(request.POST)
+        if filled_form.is_valid():
+            created_uniform = filled_form.save()
+            created_uniform_pk = created_uniform.id
+
+            print(created_uniform_pk)
+
+        return render(request, 'uniformes/ordenar.html', {'uniformform':filled_form})
+    else: return render(request, 'uniformes/ordenar.html', {'uniformform':filled_form})
 
 """def ordenar(request):
     if request.method == 'POST':

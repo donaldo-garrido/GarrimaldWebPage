@@ -10,19 +10,225 @@
 <div class="my-5 text-center container"> 
     <header><title>Ordenar</title></header>
 
-    <body><h1>Ordene un uniforme</h1></body>
-  </div>
+    <body><h1 style="text-align: left;">Ordene un uniforme</h1></body>
 
 
-<form action="{% url 'ordenar' %}" method="post" novalidate>
+
+<form action="{% url 'ordenar' %}" method="post" class="center">
     {% csrf_token %}
     <table>
+        <tr>
+            <th>
+                Escuela:
+            </th>
+            <th>
+                {{ uniformform.escuela }}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Nombre:
+            </th>
+            <th>
+                {{ uniformform.nombre }}
+            </th>
+        </tr>
+       
+    </table>
 
-        {{ uniformform.as_table }}
+    <br>
 
+    <body><h3 style="text-align: left;">Diario</h3></body>
+
+    <table>
+        <tr>
+            <th>
+                Prenda
+            </th>
+            <th>
+                TALLA
+            </th>
+            <th>
+                CANTIDAD    
+            </th>
+            <th>
+                
+            </th>
+            <th>
+                LARGO
+            </th>
+        </tr>
+        <tr>
+            <th>
+                SUETER
+            </th>
+            <th>
+                {{ uniformform.sueter }}
+            </th>
+            <th>
+                {{ uniformform.sueter_cantidad }}
+            </th>
+            <th>
+                - - - - - - - -
+            </th>
+            <th>
+                {{ uniformform.sueter_largo }}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                PANTALÓN
+            </th>
+            <th>
+                {{ uniformform.pantalon }}
+            </th>
+            <th>
+                {{ uniformform.pantalon_cantidad }}
+            </th>
+            <th>
+                
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+        <tr>
+            <th>
+                CAMISA
+            </th>
+            <th>
+                {{ uniformform.camisa }}
+            </th>
+            <th>
+                {{ uniformform.camisa_cantidad }}
+            </th>
+            <th>
+                
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+       
+    </table>
+
+    <br>
+
+    <body><h3 style="text-align: left;">Deportivo</h3></body>
+
+    <table>
+        <tr>
+            <th>
+                Prenda
+            </th>
+            <th>
+                TALLA
+            </th>
+            <th>
+                CANTIDAD    
+            </th>
+            <th>
+                
+            </th>
+            <th>
+                LARGO
+            </th>
+        </tr>
+        <tr>
+            <th>
+                CHAMARRA
+            </th>
+            <th>
+                {{ uniformform.chamarra }}
+            </th>
+            <th>
+                {{ uniformform.chamarra_cantidad }}
+            </th>
+            <th>
+                - - - - - - - -
+            </th>
+            <th>
+                {{ uniformform.chamarra_largo }}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                PANTS
+            </th>
+            <th>
+                {{ uniformform.pants }}
+            </th>
+            <th>
+                {{ uniformform.pants_cantidad }}
+            </th>
+            <th>
+                - - - - - - - -
+            </th>
+            <th>
+                {{ uniformform.pants_largo }}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                PLAYERA
+            </th>
+            <th>
+                {{ uniformform.playera }}
+            </th>
+            <th>
+                {{ uniformform.playera_cantidad }}
+            </th>
+            <th>
+                - - - - - - - -
+            </th>
+            <th>
+                {{ uniformform.playera_largo }}
+            </th>
+        </tr>
+       
     </table>
     
-    <input type="submit" value="Ordenar">
+    <br>
+
+    <body><h3 style="text-align: left;">Otros datos</h3></body>
+
+    <table>
+        <tr>
+            <th>
+                Bordados:
+            </th>
+            <th>
+                {{ uniformform.bordados }}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Nombre Bordado:
+            </th>
+            <th>
+                {{ uniformform.bordado_nombre }}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Celular:
+            </th>
+            <th>
+                {{ uniformform.celular }}
+            </th>
+        </tr>
+       
+    </table>
+    <br>
+    <table>
+        <tr>
+            <th>
+                <input type="submit" class="btn btn-primary" value="Ordenar">
+            </th>
+        </tr>
+    </table>
+    
 </form>
+</div>
 
 {% endblock %}
