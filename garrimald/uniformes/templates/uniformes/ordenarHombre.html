@@ -14,7 +14,7 @@
 
 
 
-<form action="{% url 'ordenar' %}" method="post" class="center">
+<form action="{% url 'ordenarHombre' %}" method="post" class="center">
     {% csrf_token %}
     <table>
         <tr>
@@ -60,19 +60,19 @@
         </tr>
         <tr>
             <th>
-                SUETER
+                SUETER (H)
             </th>
             <th>
-                {{ uniformform.sueter }}
+                {{ uniformform.sueter_hombre }}
             </th>
             <th>
-                {{ uniformform.sueter_cantidad }}
+                {{ uniformform.sueter_hombre_cantidad }}
             </th>
             <th>
                 - - - - - - - -
             </th>
             <th>
-                {{ uniformform.sueter_largo }}
+                {{ uniformform.sueter_hombre_largo }}
             </th>
         </tr>
         <tr>

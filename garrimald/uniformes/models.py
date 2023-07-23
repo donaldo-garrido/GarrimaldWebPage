@@ -65,16 +65,30 @@ class Pedidos(models.Model):
         choices=CANTIDAD,
     )
 
-    # Sueter
-    sueter = models.IntegerField(
+    # Sueter hombre
+    sueter_hombre = models.IntegerField(
         default=0,
         choices= TALLAS,
     )
-    sueter_largo = models.IntegerField(
+    sueter_hombre_largo = models.IntegerField(
         default=0,
         choices= TALLAS,
     )
-    sueter_cantidad = models.IntegerField(
+    sueter_hombre_cantidad = models.IntegerField(
+        default=0,
+        choices=CANTIDAD,
+    )
+
+    # Sueter mujer
+    sueter_mujer = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    sueter_mujer_largo = models.IntegerField(
+        default=0,
+        choices= TALLAS,
+    )
+    sueter_mujer_cantidad = models.IntegerField(
         default=0,
         choices=CANTIDAD,
     )

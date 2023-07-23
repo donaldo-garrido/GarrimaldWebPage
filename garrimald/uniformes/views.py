@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 
 # Importamos funciones y clases
-from .forms import HombreForm
+from .forms import HombreForm, MujerForm
 from .models import Escuela, Pedidos
 
 # -----------------------------------------------
@@ -32,11 +32,36 @@ class LogoutInterfaceView(LogoutView):
 def administradores(request):
     return render(request, 'uniformes/administradores.html')
 
+# -----------------------------------------------
+# Función para hacer filtrado de sexo del niñ@
+@login_required(login_url='login')
+def sexo(request):
+    return render(request, 'uniformes/sexo.html')
 
 # -----------------------------------------------
-# Función para ordenar un pedido
+# Función para ordenar un pedido de niño
 @login_required(login_url='login')
-def ordenar(request):
+def ordenarMujer(request):
+    filled_form = MujerForm()
+    if request.method == 'POST':
+        filled_form = MujerForm(request.POST)
+        if filled_form.is_valid():
+            created_uniform = filled_form.save()
+            created_uniform_pk = created_uniform.id
+
+            print(created_uniform_pk)
+            print(created_uniform.nombre)
+            print(created_uniform.sueter_mujer_largo)
+            #note = 'El uniforme de %s fue ordenado\nEscuela: %s \n%s Sueter T-%s \n%s Jumper T-%s \n%s Blusa T-%s \n%s Chamarra T-%s \n%s Pants T-%s \n%s Playera T-%s \nCon %sBordados' 
+
+        return render(request, 'uniformes/ordenarMujer.html', {'uniformform':filled_form})
+    else: return render(request, 'uniformes/ordenarMujer.html', {'uniformform':filled_form})
+
+
+# -----------------------------------------------
+# Función para ordenar un pedido de niño
+@login_required(login_url='login')
+def ordenarHombre(request):
     filled_form = HombreForm()
     if request.method == 'POST':
         filled_form = HombreForm(request.POST)
@@ -46,24 +71,8 @@ def ordenar(request):
 
             print(created_uniform_pk)
 
-        return render(request, 'uniformes/ordenar.html', {'uniformform':filled_form})
-    else: return render(request, 'uniformes/ordenar.html', {'uniformform':filled_form})
-
-"""def ordenar(request):
-    if request.method == 'POST':
-        filled_form = Pedidos(request.POST)#, request.FILES)
-        if filled_form.is_valid():
-            created_uniform = filled_form.save()
-            created_uniform_pk = created_uniform.id
-
-            note = ' El uniforme de %s se ha registrado' %(filled_form.cleaned_data['nombre'],)
-            filled_form = Pedidos()
-        else:
-            created_uniform_pk = None
-            note = 'Pizza order has failed. Try again.'
-        return render(request, 'uniformes/ordenar.html', {'created_uniform_pk':created_uniform_pk, 'uniformform':filled_form, 'note':note})
-
-"""
+        return render(request, 'uniformes/ordenarHombre.html', {'uniformform':filled_form})
+    else: return render(request, 'uniformes/ordenarHombre.html', {'uniformform':filled_form})
 
 # -----------------------------------------------
 # Función para ver un pedido (externo)
