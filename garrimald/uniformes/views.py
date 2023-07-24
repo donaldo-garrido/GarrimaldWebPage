@@ -45,6 +45,7 @@ def ordenarMujer(request):
     filled_form = MujerForm()
     if request.method == 'POST':
         filled_form = MujerForm(request.POST)
+        
         if filled_form.is_valid():
             created_uniform = filled_form.save()
             created_uniform_pk = created_uniform.id

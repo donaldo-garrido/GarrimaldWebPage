@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from datetime import datetime
 
 # Create your models here.
 
@@ -154,17 +155,65 @@ class Pedidos(models.Model):
             MinValueValidator(0)
         ]
     )
-
-class Pagos(models.Model):
-    pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE, default=0)
-    total = models.FloatField()
-    a_cuenta = models.FloatField()
-    resta = models.FloatField()
+    fecha_hora = models.CharField(default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                  max_length=64)
 
 
 class Precios(models.Model):
-    PRENDAS = (('chamarra','chamarra'), ('playera','playera'), ('pants','pants'), 
+    """PRENDAS = (('chamarra','chamarra'), ('playera','playera'), ('pants','pants'), 
                ('sueter','sueter'), ('camisa','camisa'), ('blusa','blusa'),
-               ('pantalon','pantalon'), ('jumper', 'jumper'),)
-    escuela = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
-    prenda = models.CharField(max_length=64, default='', choices=PRENDAS)
+               ('pantalon','pantalon'), ('jumper', 'jumper'),)"""
+    escuela = models.ForeignKey(Escuela, on_delete=models.CASCADE)
+
+    # Chamarra
+    chamarra_cantidad = models.FloatField(default=0,)
+
+    # Playera
+    playera_cantidad = models.FloatField(default=0,)
+
+    # Pants
+    pants_cantidad = models.FloatField(default=0,)
+
+    # Sueter hombre
+    sueter_hombre_cantidad = models.FloatField(default=0,)
+
+    # Sueter mujer
+    sueter_mujer_cantidad = models.FloatField(default=0,)
+
+    # Camisa
+    camisa_cantidad = models.FloatField(default=0,)
+
+    # Blusa
+    blusa_cantidad = models.FloatField(default=0,)
+
+    # Pantalón
+    pantalon_cantidad = models.FloatField(default=0,)
+
+    # Jumper
+    jumper_cantidad = models.FloatField(default=0,)
+
+    # Bordado
+    bordados = models.FloatField(default=0,)
+
+
+
+class Total(models.Model):
+    pedido = models.IntegerField(default=0)
+    total = models.FloatField()
+
+class Cuenta(models.Model):
+    pedido = models.IntegerField(default=0)
+    a_cuenta = models.FloatField()
+
+class Resta(models.Model):
+    pedido = models.IntegerField(default=0)
+    resta = models.FloatField()
+    entregado = models.IntegerField(
+        default=0,
+        choices= ((0,'NO'), (1,'SI')),
+    )
+
+
+class Cuenta(models.Model):
+    pedido = models.IntegerField(default=0)
+    a_cuenta = models.FloatField()
