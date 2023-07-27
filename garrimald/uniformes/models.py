@@ -212,8 +212,3 @@ class Resta(models.Model):
         default=0,
         choices= ((0,'NO'), (1,'SI')),
     )
-
-
-class Cuenta(models.Model):
-    pedido = models.IntegerField(default=0)
-    a_cuenta = models.FloatField()

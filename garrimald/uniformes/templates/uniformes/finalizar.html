@@ -1,0 +1,82 @@
+{% extends 'uniformes/base.html' %}
+
+{% block 'body' %}
+<div class="container">
+
+    <h1>Display DataBase</h1>
+
+    <style>
+        .zui-table {
+            border: solid 1px #DDEEEE;
+            border-collapse: collapse;
+            border-spacing: 0;
+            font: normal 20px Arial, sans-serif;
+        }
+        .zui-table thead th {
+            background-color: #2b5f82;
+            border: solid 1px #8eafc9;
+            color: #ffffff;
+            padding: 10px;
+            text-align: left;
+            text-shadow: 1px 1px 1px #2b5f82;
+        }
+        .zui-table tbody td {
+            border: solid 1px #DDEEEE;
+            color: #333;
+            padding: 10px;
+            text-shadow: 1px 1px 1px #fff;
+        }
+    </style>
+
+    <br><br>
+
+    <table class="zui-table">
+        <thead>
+            <tr>
+                <th>
+                    Prenda
+                </th>
+                <th>
+                    Cantidad
+                </th>
+                <th>
+                    Precio
+                </th>
+                <th>
+                    Total
+                </th>
+            </tr>
+        </thead>
+        {% for instance in dict_finalizar %}
+            <tr>
+                <td>
+                    {{ instance.prenda }}
+                </td>
+                <td>
+                    {{ instance.cantidad }}
+                </td>
+                <td>
+                    {{ instance.precio }}
+                </td>
+                <td>
+                    {{ instance.total }}
+                </td>
+            </tr>
+
+        {% endfor %}
+    </table>
+
+</div>
+
+
+{% if created_pizza_pk %}
+          <h2><a href="{% url 'editar' created_pizza_pk %}">Edit Your Order</a></h2>
+ {% endif %}
+
+<div class="text-center">
+    <br>
+         <a class="btn btn-danger" href="{% url 'ordenarMujer' %}">Ordenar</a>
+
+</div>
+{% endblock %}
+
