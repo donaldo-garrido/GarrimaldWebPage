@@ -2,8 +2,8 @@
 
 {% block 'body' %}
 <div class="container">
-
-    <h1>Display DataBase</h1>
+    <br>
+    <h1>Resumen del pedido</h1>
 
     <style>
         .zui-table {
@@ -13,9 +13,9 @@
             font: normal 20px Arial, sans-serif;
         }
         .zui-table thead th {
-            background-color: #2b5f82;
+            background-color: #00C8DA;
             border: solid 1px #8eafc9;
-            color: #ffffff;
+            color: #000000;
             padding: 10px;
             text-align: left;
             text-shadow: 1px 1px 1px #2b5f82;
@@ -26,6 +26,7 @@
             padding: 10px;
             text-shadow: 1px 1px 1px #fff;
         }
+        
     </style>
 
     <br><br>
@@ -43,7 +44,7 @@
                     Precio
                 </th>
                 <th>
-                    Total
+                    Totales
                 </th>
             </tr>
         </thead>
@@ -66,17 +67,23 @@
         {% endfor %}
     </table>
 
+    <br><br>
+
+    <h2>Total = ${{ suma }} </h2>
+
+    {% if created_uniform_pk %}
+        <a class="btn btn-warning btn-lg" href="{% url 'ordenarMujer' %}">Editar pedido</a>
+    {% endif %}
+
+
+    <br><br>
+    <a class="btn btn-primary btn-lg" href="{% url 'ordenarMujer' %}">Finalizar</a>
+
+
 </div>
 
 
-{% if created_pizza_pk %}
-          <h2><a href="{% url 'editar' created_pizza_pk %}">Edit Your Order</a></h2>
- {% endif %}
 
-<div class="text-center">
-    <br>
-         <a class="btn btn-danger" href="{% url 'ordenarMujer' %}">Ordenar</a>
 
-</div>
 {% endblock %}
 

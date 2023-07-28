@@ -5,10 +5,11 @@ from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 import pandas as pd
+import numpy as np
 
 # Importamos funciones y clases
 from .forms import HombreForm, MujerForm
-from .models import Precios
+from .models import Pedidos, Precios
 
 # -----------------------------------------------
 # Función para el Inicio
@@ -60,38 +61,80 @@ def ordenarMujer(request):
             created_uni = filled_form.save()
             created_uniform_pk = created_uni.id
 
-            precios = Precios.objects.get(pk=created_uni.escuela_id)
-            print(precios)
-            print(precios.pantalon_cantidad)
-            print('........................................')
-
-            list_finalizar = []
-
-            if created_uni.playera_cantidad != 0:
-                prenda = 'Playera'
-                cantidad = created_uni.playera_cantidad
-                precio = precios.playera_cantidad
-                total = cantidad*precio
-                dict_finalizar = {'prenda':prenda,'cantidad':cantidad,
-                                  'precio':precio, 'total':total}
-                
-                list_finalizar.append(dict_finalizar)
-
-
-            #if created_uniform.
+            cantidades = [created_uni.escuela_id, created_uni.sueter_mujer_cantidad, created_uni.sueter_hombre_cantidad, 
+                   created_uni.jumper_cantidad, created_uni.pantalon_cantidad, created_uni.blusa_cantidad,
+                   created_uni.camisa_cantidad, created_uni.chamarra_cantidad, created_uni.pants_cantidad,
+                   created_uni.playera_cantidad, created_uni.bordados]
+            
+            tallas = [created_uni.escuela_id, created_uni.sueter_mujer, created_uni.sueter_hombre, 
+                   created_uni.jumper, created_uni.pantalon, created_uni.blusa,
+                   created_uni.camisa, created_uni.chamarra, created_uni.pants,
+                   created_uni.playera, '']
+            
+            
+            list_finalizar, suma = Calculations(cantidades, tallas)
             
 
             print(created_uniform_pk)
             print(created_uni.nombre)
-            print(created_uni.sueter_mujer_largo)
-            #note = 'El uniforme de %s fue ordenado\nEscuela: %s \n%s Sueter T-%s \n%s Jumper T-%s \n%s Blusa T-%s \n%s Chamarra T-%s \n%s Pants T-%s \n%s Playera T-%s \nCon %sBordados' 
 
-        return render(request, 'uniformes/finalizar.html', {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar})
+            instance = {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar, 'suma':suma}
+            
+        return render(request, 'uniformes/finalizar.html', instance)
     else: return render(request, 'uniformes/ordenarMujer.html', {'uniformform':formset})
 
 
 # -----------------------------------------------
+# Función para calcular el costo de un pedido
+def Calculations(cantidades, tallas):
+
+    list_fin = []
+    preciosDB = Precios.objects.get(pk=cantidades[0])
+    print(preciosDB)
+    print('........................................')
+
+    titulos = ['Escuela', 'Sueter (M)', 'Sueter (H)', 'Jumper', 
+               'Pantalon', 'Blusa', 'Camisa', 'Chamarra', 'Pants', 
+               'Playera', 'Bordados']
+    
+    precios = [preciosDB.escuela_id, preciosDB.sueter_mujer_cantidad, preciosDB.sueter_hombre_cantidad, 
+                   preciosDB.jumper_cantidad, preciosDB.pantalon_cantidad, preciosDB.blusa_cantidad,
+                   preciosDB.camisa_cantidad, preciosDB.chamarra_cantidad, preciosDB.pants_cantidad,
+                   preciosDB.playera_cantidad, preciosDB.bordados]
+    
+    totales = np.array(cantidades)*np.array(precios)
+    print(len(cantidades), len(titulos), len(precios))
+    print('........................................')
+    print(cantidades)
+    print('........................................')
+    print(titulos)
+    print('........................................')
+    print(precios)
+    print('........................................')
+    print(totales)
+
+    suma = 0
+
+    for item in range(len(totales)-1):
+        if totales[item+1] != 0.0:
+            
+            if item+2 == len(totales):
+                prenda = titulos[item+1]
+            else: prenda = titulos[item+1]+' T-'+str(tallas[item+1])
+            dict_finalizar = {'prenda':prenda,'cantidad':cantidades[item+1],
+                                  'precio':precios[item+1], 'total':totales[item+1]}
+                
+            list_fin.append(dict_finalizar)
+            suma += totales[item+1]
+
+    
+    return list_fin, suma
+
+
+# -----------------------------------------------
 # Función para ordenar un pedido de niño
+# Orden:
+# Sueter, jumper, pantalon, blusa, camisa, chamarra, pants, playera, bordados
 @login_required(login_url='login')
 def ordenarHombre(request):
     filled_form = HombreForm()
@@ -114,7 +157,22 @@ def ver(request):
 # -----------------------------------------------
 # Función para editar un pedido
 @login_required(login_url='login')
-def editar(request):
+def editar(request, pk, sexo):
+    pedido = Pedidos.objects.get(pk=pk)
+    if sexo == 'Mujer':
+        form = MujerForm(instance=pedido)
+
+        if request.method == 'POST':
+            filled_form = MujerForm(request.POST, instance=pedido)
+            if filled_form.is_valid():
+                filled_form.save()
+                form = filled_form
+                note = 'El pedido fue actualizado'
+                return render(request, 'uniformes/finalizar.html', {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar, 'note':note})
+
+    elif sexo == 'Hombre':
+        form = HombreForm(instance=pedido)
+
     return render(request, 'uniformes/editar.html')
 
 # -----------------------------------------------
