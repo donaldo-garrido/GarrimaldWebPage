@@ -1,5 +1,5 @@
 from django import forms
-from .models import Pedidos
+from .models import Pedidos, Cuenta, Resta
 
 class HombreForm(forms.ModelForm):
 
@@ -24,3 +24,9 @@ class MujerForm(forms.ModelForm):
                   'blusa', 'blusa_cantidad',
                   'jumper', 'jumper_cantidad',
                   'bordados', 'bordado_nombre', 'celular']
+        
+class CuentaForm(forms.ModelForm):
+
+    class Meta:
+        model = Cuenta
+        fields = ['pedido', 'a_cuenta',]

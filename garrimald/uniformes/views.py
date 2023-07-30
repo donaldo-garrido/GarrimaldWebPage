@@ -157,23 +157,41 @@ def ver(request):
 # -----------------------------------------------
 # Función para editar un pedido
 @login_required(login_url='login')
-def editar(request, pk, sexo):
+def editarMujer(request, pk):
     pedido = Pedidos.objects.get(pk=pk)
-    if sexo == 'Mujer':
-        form = MujerForm(instance=pedido)
 
-        if request.method == 'POST':
-            filled_form = MujerForm(request.POST, instance=pedido)
-            if filled_form.is_valid():
-                filled_form.save()
-                form = filled_form
-                note = 'El pedido fue actualizado'
-                return render(request, 'uniformes/finalizar.html', {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar, 'note':note})
+    form = MujerForm(instance=pedido)
 
-    elif sexo == 'Hombre':
-        form = HombreForm(instance=pedido)
+    if request.method == 'POST':
+        filled_form = MujerForm(request.POST, instance=pedido)
+        if filled_form.is_valid():
+            created_uni = filled_form.save()
+            form = filled_form
+            note = 'El pedido fue actualizado'
+            created_uniform_pk = created_uni.id
 
-    return render(request, 'uniformes/editar.html')
+            cantidades = [created_uni.escuela_id, created_uni.sueter_mujer_cantidad, created_uni.sueter_hombre_cantidad, 
+                   created_uni.jumper_cantidad, created_uni.pantalon_cantidad, created_uni.blusa_cantidad,
+                   created_uni.camisa_cantidad, created_uni.chamarra_cantidad, created_uni.pants_cantidad,
+                   created_uni.playera_cantidad, created_uni.bordados]
+            
+            tallas = [created_uni.escuela_id, created_uni.sueter_mujer, created_uni.sueter_hombre, 
+                   created_uni.jumper, created_uni.pantalon, created_uni.blusa,
+                   created_uni.camisa, created_uni.chamarra, created_uni.pants,
+                   created_uni.playera, '']
+            
+            
+            list_finalizar, suma = Calculations(cantidades, tallas)
+            
+
+            print(created_uniform_pk)
+            print(created_uni.nombre)
+
+            instance = {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar, 'suma':suma}
+            
+        return render(request, 'uniformes/finalizar.html', instance)
+            
+    return render(request, 'uniformes/editarMujer.html', {'uniformform':form, 'pedido':pedido})
 
 # -----------------------------------------------
 # Función para 

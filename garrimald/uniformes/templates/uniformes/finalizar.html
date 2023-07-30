@@ -3,7 +3,7 @@
 {% block 'body' %}
 <div class="container">
     <br>
-    <h1>Resumen del pedido</h1>
+    <h1>Resumen del pedido No. {{ created_uniform_pk }} </h1>
 
     <style>
         .zui-table {
@@ -69,15 +69,19 @@
 
     <br><br>
 
-    <h2>Total = ${{ suma }} </h2>
-
     {% if created_uniform_pk %}
-        <a class="btn btn-warning btn-lg" href="{% url 'ordenarMujer' %}">Editar pedido</a>
+        <a class="btn btn-warning btn-lg" href="{% url 'editarMujer' created_uniform_pk %}">Editar pedido</a>
+
+        <h2>Total = ${{ suma }} </h2>
+
+    
+
+
+        <br><br>
+        <a class="btn btn-primary btn-lg" href="{% url 'ordenarMujer' %}">Pagar</a>
     {% endif %}
 
-
-    <br><br>
-    <a class="btn btn-primary btn-lg" href="{% url 'ordenarMujer' %}">Finalizar</a>
+    
 
 
 </div>

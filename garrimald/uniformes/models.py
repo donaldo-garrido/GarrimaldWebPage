@@ -198,15 +198,15 @@ class Precios(models.Model):
 
 
 class Total(models.Model):
-    pedido = models.IntegerField(default=0)
+    pedido = models.IntegerField(default=0, primary_key=True)
     total = models.FloatField()
 
 class Cuenta(models.Model):
-    pedido = models.IntegerField(default=0)
+    pedido = models.IntegerField(default=0, primary_key=True)
     a_cuenta = models.FloatField()
 
 class Resta(models.Model):
-    pedido = models.IntegerField(default=0)
+    pedido = models.IntegerField(default=0, primary_key=True)
     resta = models.FloatField()
     entregado = models.IntegerField(
         default=0,
