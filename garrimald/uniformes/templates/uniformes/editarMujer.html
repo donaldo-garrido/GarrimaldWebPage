@@ -10,10 +10,10 @@
 <div class="my-5 text-center container"> 
   <header><title>Editar</title></header>
 
-  <body><h1 style="text-align: left;">Editar pedido</h1></body>
+  <body><h1>Editar pedido</h1></body>
 
 
-
+<center>
 <form action="{% url 'editarMujer' pedido.id %}" method="post" class="center">
   {% csrf_token %}
   <table>
@@ -38,7 +38,7 @@
 
   <br>
 
-  <body><h3 style="text-align: left;">Diario</h3></body>
+  <body><h3>Diario</h3></body>
 
   <table>
       <tr>
@@ -114,7 +114,7 @@
 
   <br>
 
-  <body><h3 style="text-align: left;">Deportivo</h3></body>
+  <body><h3>Deportivo</h3></body>
 
   <table>
       <tr>
@@ -190,7 +190,7 @@
   
   <br>
 
-  <body><h3 style="text-align: left;">Otros datos</h3></body>
+  <body><h3>Otros datos</h3></body>
 
   <table>
       <tr>
@@ -229,6 +229,7 @@
   </table>
   
 </form>
+</center>
 </div>
 
 {% endblock %}

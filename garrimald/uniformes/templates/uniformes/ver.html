@@ -6,11 +6,93 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 
+<style>
+  .zui-table {
+      border: solid 1px #DDEEEE;
+      border-collapse: collapse;
+      border-spacing: 0;
+      font: normal 20px Arial, sans-serif;
+      margin-left: auto;
+      margin-right: auto;
+  }
+  .zui-table thead th {
+      background-color: #00C8DA;
+      border: solid 1px #8eafc9;
+      color: #000000;
+      padding: 10px;
+      text-align: center;
+      
+  }
+  .zui-table tbody td {
+      border: solid 1px #DDEEEE;
+      color: #333;
+      padding: 10px;
+      text-shadow: 1px 1px 1px #fff;
+  }
+  
+</style>
+
 <body>
     <div class="my-5 text-center container"> 
       <header><title>Ver</title></header>
 
       <body><h1>Revisa tu pedido</h1></body>
+
+      <form  action="{% url 'ver' %}" method="post">
+        {% csrf_token %}
+        {{ verform.as_table }}
+        <input type="submit" class="btn btn-primary" value="Ver">
+      </form>
+      <br>
+      {% if note %}    
+          <h4 style="color: red">{{ note }} </h4>
+      {% endif %}
+
+      {% if data %}
+          <h4>Nombre: {{ detalles.nombre }} </h4>
+          <h4>Escuela: {{ detalles.escuela }} </h4>
+          Fecha del pedido: {{ detalles.fecha }}
+
+          <br>
+
+          <table class="zui-table">
+              <thead>
+                  <tr>
+                      <th>
+                          Prenda
+                      </th>
+                      <th>
+                          Talla
+                      </th>
+                      <th>
+                          Cantidad
+                      </th>
+                  </tr>
+              </thead>
+              {% for instance in data %}
+                  <tr>
+                      <td>
+                          {{ instance.prenda }}
+                      </td>
+                      <td>
+                          {{ instance.talla }}
+                      </td>
+                      <td>
+                          {{ instance.cantidad }}
+                      </td>
+                  </tr>
+
+              {% endfor %}
+          </table>
+          Bordados: {{ detalles.bordados }}
+          <h4>Total: ${{ detalles.total }} </h4>
+          <h4>A cuenta: ${{ detalles.a_cuenta }} </h4>
+          <h4>Resta: ${{ detalles.resta }} </h4>
+          <h4>Entregado: {{ detalles.entregado }} </h4>
+      {% endif %}
+    
+
+
     </div>
 <body>
 

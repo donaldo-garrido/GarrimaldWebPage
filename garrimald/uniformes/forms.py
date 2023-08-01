@@ -1,5 +1,5 @@
 from django import forms
-from .models import Pedidos, Cuenta, Resta
+from .models import Pedidos, Total
 
 class HombreForm(forms.ModelForm):
 
@@ -25,8 +25,15 @@ class MujerForm(forms.ModelForm):
                   'jumper', 'jumper_cantidad',
                   'bordados', 'bordado_nombre', 'celular']
         
+
 class CuentaForm(forms.ModelForm):
 
     class Meta:
-        model = Cuenta
-        fields = ['pedido', 'a_cuenta',]
+        model = Total
+        fields = ['a_cuenta', 'entregado']
+
+
+
+class VerForm(forms.Form):
+    ver_pk = forms.IntegerField(label='No. de pedido')
+    celular = forms.IntegerField(label='Celular')

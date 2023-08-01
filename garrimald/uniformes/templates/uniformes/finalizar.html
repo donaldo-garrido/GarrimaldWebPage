@@ -1,9 +1,18 @@
 {% extends 'uniformes/base.html' %}
 
 {% block 'body' %}
-<div class="container">
+<head>
+    <title>Ver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="my-5 text-center container"> 
     <br>
     <h1>Resumen del pedido No. {{ created_uniform_pk }} </h1>
+    <h3> {{ nombre }}  </h3>
+
+
 
     <style>
         .zui-table {
@@ -11,14 +20,15 @@
             border-collapse: collapse;
             border-spacing: 0;
             font: normal 20px Arial, sans-serif;
+            margin-left: auto;
+            margin-right: auto;
         }
         .zui-table thead th {
             background-color: #00C8DA;
             border: solid 1px #8eafc9;
             color: #000000;
             padding: 10px;
-            text-align: left;
-            text-shadow: 1px 1px 1px #2b5f82;
+            text-align: center;
         }
         .zui-table tbody td {
             border: solid 1px #DDEEEE;
@@ -70,21 +80,22 @@
     <br><br>
 
     {% if created_uniform_pk %}
+        <h2 style="text-align: center;">Total = ${{ suma }}  </h2>
+
+        <br>
         <a class="btn btn-warning btn-lg" href="{% url 'editarMujer' created_uniform_pk %}">Editar pedido</a>
 
-        <h2>Total = ${{ suma }} </h2>
-
-    
-
-
         <br><br>
-        <a class="btn btn-primary btn-lg" href="{% url 'ordenarMujer' %}">Pagar</a>
+
+        <a class="btn btn-primary btn-lg" href="{% url 'pagar' created_uniform_pk %}" >Pagar</a>
+
     {% endif %}
 
     
 
 
 </div>
+<body>
 
 
 

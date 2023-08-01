@@ -8,8 +8,8 @@ import pandas as pd
 import numpy as np
 
 # Importamos funciones y clases
-from .forms import HombreForm, MujerForm
-from .models import Pedidos, Precios
+from .forms import HombreForm, MujerForm, CuentaForm, VerForm
+from .models import Pedidos, Precios, Total
 
 # -----------------------------------------------
 # Función para el Inicio
@@ -56,6 +56,7 @@ def ordenarMujer(request):
     formset = MujerForm()
     if request.method == 'POST':
         filled_form = MujerForm(request.POST)
+
         
         if filled_form.is_valid():
             created_uni = filled_form.save()
@@ -77,6 +78,9 @@ def ordenarMujer(request):
 
             print(created_uniform_pk)
             print(created_uni.nombre)
+
+            total_pedido = Total(pedido=created_uniform_pk, total=suma)
+            total_pedido.save()
 
             instance = {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar, 'suma':suma}
             
@@ -149,10 +153,7 @@ def ordenarHombre(request):
         return render(request, 'uniformes/ordenarHombre.html', {'uniformform':filled_form})
     else: return render(request, 'uniformes/ordenarHombre.html', {'uniformform':filled_form})
 
-# -----------------------------------------------
-# Función para ver un pedido (externo)
-def ver(request):
-    return render(request, 'uniformes/ver.html')
+
 
 # -----------------------------------------------
 # Función para editar un pedido
@@ -187,11 +188,45 @@ def editarMujer(request, pk):
             print(created_uniform_pk)
             print(created_uni.nombre)
 
-            instance = {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar, 'suma':suma}
+            total_pedido = Total(pedido=created_uniform_pk, total=suma)
+            total_pedido.save()
+
+            instance = {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar, 'suma':suma, 'nombre': created_uni.nombre}
             
         return render(request, 'uniformes/finalizar.html', instance)
             
     return render(request, 'uniformes/editarMujer.html', {'uniformform':form, 'pedido':pedido})
+
+# -----------------------------------------------
+# Función para 
+@login_required(login_url='login')
+def pagar(request, pk):
+
+    pago = Total.objects.get(pk=pk)
+
+    form = CuentaForm(instance=pago)
+
+    if request.method == 'POST':
+        filled_form = CuentaForm(request.POST, instance=pago)
+        if filled_form.is_valid():
+            created_pago = filled_form.save()
+            form = filled_form
+
+            resta = pago.total-created_pago.a_cuenta
+
+            #resta_pedido = Total(resta=resta, entregado=0)
+            #resta_pedido.save()
+            pago.resta = resta
+            pago.save()
+            #instance = {'created_uniform_pk':created_uniform_pk, 'dict_finalizar':list_finalizar, 'suma':suma, 'nombre': created_uni.nombre}
+            
+            return render(request, 'uniformes/pagar.html', {'pagoform':form, 'resta':resta, 'pedido_pk':pk})
+            
+    return render(request, 'uniformes/pagar.html', {'pagoform':form, 'pedido_pk':pk})
+
+
+
+    return render(request, 'uniformes/pagar.html')
 
 # -----------------------------------------------
 # Función para 
@@ -205,4 +240,82 @@ def capital(request):
 @login_required(login_url='login')
 def dbase(request):
     return render(request, 'uniformes/dbase.html')
+
+# -----------------------------------------------
+# Función para ver un pedido (externo)
+
+def ver(request):
+    filled_form = VerForm()
+    if request.method == 'POST':
+        filled_form = VerForm(request.POST)
+        if filled_form.is_valid():
+            pk_pedido = filled_form.cleaned_data.get('ver_pk')
+
+            celular = filled_form.cleaned_data.get('celular')
+
+            info = Pedidos.objects.get(pk=pk_pedido)
+            dinero = Total.objects.get(pk=pk_pedido)
+
+            if celular == info.celular:
+
+                data = tabular(pk_pedido)
+
+                detalles = {}
+
+                detalles['nombre'] = info.nombre
+                detalles['escuela'] = info.escuela
+                detalles['fecha'] = info.fecha_hora[:10]
+                detalles['bordados'] = info.bordados
+                detalles['total'] = dinero.total
+                detalles['a_cuenta'] = dinero.a_cuenta
+                detalles['resta'] = dinero.resta
+                if dinero.entregado == 0:
+                    detalles['entregado'] = 'No'
+                else: detalles['entregado'] = 'Sí'
+
+                return render(request, 'uniformes/ver.html', {'verform':filled_form, 'data':data, 'detalles':detalles})
+
+
+            else: 
+                note = 'El número celular no coincide con el proporcionado al hacer el pedido. \nIntente de nuevo.'
+                filled_form = VerForm()
+                return render(request, 'uniformes/ver.html', {'verform':filled_form, 'note':note,})
+
+        
+    else: return render(request, 'uniformes/ver.html', {'verform':filled_form})
+
+# -----------------------------------------------
+# Función para sacar diccionario para tabular
+def tabular(pk_pedido):
+
+    list_fin = []
+    data = Pedidos.objects.get(pk=pk_pedido)
+
+    titulos = ['Sueter (M)', 'Sueter (H)', 'Jumper', 
+               'Pantalon', 'Blusa', 'Camisa', 'Chamarra', 'Pants', 
+               'Playera',]
+    
+    cantidades = [data.sueter_mujer_cantidad, data.sueter_hombre_cantidad, 
+                   data.jumper_cantidad, data.pantalon_cantidad, data.blusa_cantidad,
+                   data.camisa_cantidad, data.chamarra_cantidad, data.pants_cantidad,
+                   data.playera_cantidad,]
+
+    tallas = [data.sueter_mujer, data.sueter_hombre, 
+                   data.jumper, data.pantalon, data.blusa,
+                   data.camisa, data.chamarra, data.pants,
+                   data.playera, ]
+    
+    for item in range(len(cantidades)):
+        cantidad = cantidades[item]
+        if cantidad > 0:
+
+            prenda = titulos[item]
+            talla = tallas[item]
+
+            dict_finalizar = {'prenda':prenda, 'talla':talla, 'cantidad':cantidad,}
+                
+            list_fin.append(dict_finalizar)
+
+    return list_fin
+
 

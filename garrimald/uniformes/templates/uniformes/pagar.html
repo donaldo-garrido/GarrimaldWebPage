@@ -1,0 +1,55 @@
+{% extends 'uniformes/base.html' %}
+
+{% block 'body' %}
+<head>
+    <title>Ver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="my-5 text-center container"> 
+        <br>
+        <h1>Pago</h1>
+        <h3>Nombre </h3>
+
+        <center>
+            <form action="{% url 'pagar' pedido_pk %}" method="post" class="center">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <th>
+                            A cuenta:
+                        </th>
+                        <th>
+                            {{ pagoform.a_cuenta }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            Entregado:
+                        </th>
+                        <th>
+                            {{ pagoform.entregado }}
+                        </th>
+                    </tr>
+                </table>
+                <br>
+                <table>
+                    <tr>
+                        <th>
+                            <input type="submit" class="btn btn-info" value="Finalizar">
+                        </th>
+                    </tr>
+                </table>
+                
+            </form>
+        </center>
+
+
+    </div>
+<body>
+
+
+
+
+{% endblock %}
