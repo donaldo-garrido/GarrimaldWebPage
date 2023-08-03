@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 # Importamos funciones y clases
-from .forms import HombreForm, MujerForm, CuentaForm, VerForm
+from .forms import HombreForm, MujerForm, CuentaForm, VerForm, SexoForm
 from .models import Pedidos, Precios, Total
 
 # -----------------------------------------------
@@ -53,6 +53,13 @@ def calcularTotal():
 # Función para ordenar un pedido de niño
 @login_required(login_url='login')
 def ordenarMujer(request):
+
+    sexoform = SexoForm()
+
+    if request.method == 'POST':
+        sexoform = SexoForm(request.POST)
+        if sexoform.is_valid():
+            pk_pedido = filled_form.cleaned_data.get('sexo')
     formset = MujerForm()
     if request.method == 'POST':
         filled_form = MujerForm(request.POST)

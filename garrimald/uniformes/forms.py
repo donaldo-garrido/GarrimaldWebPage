@@ -37,3 +37,7 @@ class CuentaForm(forms.ModelForm):
 class VerForm(forms.Form):
     ver_pk = forms.IntegerField(label='No. de pedido')
     celular = forms.IntegerField(label='Celular')
+
+
+class SexoForm(forms.Form):
+    sexo = forms.ChoiceField(label='Sexo', choices=[(0,'Mujer'),(1,'Hombre')])

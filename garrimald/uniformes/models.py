@@ -207,3 +207,5 @@ class Total(models.Model):
         choices= ((0,'NO'), (1,'SI')),
     )
 
+"""class Capital(models.Model):
+    saldo = models.FloatField(default=0.0)"""
